@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<o:viewParam name="id" value="#{consultaLancamentosBean.lancamento}" />
+		<f:viewAction action="#{consultaLancamentosBean.consultar}" />
+	</f:metadata>
+
+
+
+	<f:metadata>
+		<f:viewAction action="#{consultaLancamentosBean.calcula}" />
+	</f:metadata>
+	
+	<f:metadata>
+		<f:viewAction action="#{consultaLancamentosBean.calculaLucro}" />
+	</f:metadata>
+
+
+
+	<ui:define name="titulo">Consulta-Saldos</ui:define>
+
+	<ui:define name="corpo">
+		<h1>Consulta-Saldos</h1>
+		<h1>Selecione a Pessoa</h1>
+		<h1>1ºClick no Botão Tipo LAnçamento RECEITA ou DESPESA</h1>
+		<h1>2ºClick no Botão VALOR</h1>
+		<h1>3ºClick no Saldo para visualizar o saldo</h1>
+
+		<h:form id="frm">
+			<p:messages showDetail="false" showSummary="true" autoUpdate="true" />
+
+			<p:panelGrid columns="2" id="grid">
+				<p:outputLabel value="Tipo" for="tipo" />
+
+				<p:selectOneButton id="tipo"
+					value="#{consultaLancamentosBean.tipoLancamento}">
+					<f:selectItems value="#{consultaLancamentosBean.tiposLancamentos}"
+						var="tipoLancamento" itemValue="#{tipoLancamento}" />
+				</p:selectOneButton>
+
+
+				<p:outputLabel value="Pessoa" for="pessoa" />
+				<p:selectOneMenu value="#{consultaLancamentosBean.pessoa}"
+					id="pessoa" filter="true" filterMatchMode="contains">
+
+					<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+					<f:selectItems value="#{consultaLancamentosBean.todasPessoas}"
+						var="pessoa" itemValue="#{pessoa}" itemLabel="#{pessoa.nome}" />
+				</p:selectOneMenu>
+
+
+				<h:panelGrid columns="3">
+				
+				<p:commandButton value="Valor"
+						action="#{consultaLancamentosBean.calcula}"
+						icon="ui-icon-disk"
+						update="@form" />
+						
+						
+						<p:commandButton value="SALDO"
+						action="#{consultaLancamentosBean.calculaLucro}" icon="ui-icon-disk"
+						update="@form" />
+
+					<!--calculaLucro <p:commandButton value="Lucro"
+						action="#{consultaLancamentosBean.consultar}" icon="ui-icon-disk"
+						update="@form" /> -->
+
+					<!-- <h:commandButton value="Pesquisar"
+					action="#{consultaLancamentosBean.calcula}" /> -->
+				</h:panelGrid>
+
+                  <h:column>
+				<h:outputText value="Resultado Receitas ou Despesas: #{consultaLancamentosBean.total} 
+				                              #{consultaLancamentosBean.tipoLancamento} " />
+				                              
+				    
+					<f:facet name="header">
+						<h:outputText value="Lancamento" />
+					</f:facet>
+	        		#{consultaLancamentosBean.lucro}	        	 
+	        	</h:column>
+				
+				
+				<h:outputText value="Saldo: #{consultaLancamentosBean.lucro}  "/>
+				
+			</p:panelGrid>
+			
+				
+				
+		</h:form>
+	</ui:define>
+
+</ui:composition>

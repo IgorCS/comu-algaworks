@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+	
+		<f:metadata>
+		<f:viewAction action="#{consultaLancamentosBean.consultar}" />
+	    </f:metadata>
+
+	<ui:define name="titulo">Relatório de pedidos emitidos</ui:define>
+
+	<ui:define name="corpo">
+		<h:form id="frm">
+			<h1>Relatório de pedidos emitidos</h1>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 20px">
+				<p:toolbarGroup>
+					<p:commandButton value="Emitir"
+						action="#{relatorioPedidosEmitidosBean.emitir}" ajax="false" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages showDetail="false" showSummary="true" autoUpdate="true" />
+
+
+
+			<!-- <f:selectItems value="#{consultaLancamentosBean.todosUsuarios}"
+						var="usuario" itemValue="#{usuario}" itemLabel="#{usuario.nome}" />
+						<f:ajax event="change" render="frm"/> 
+					</p:selectOneMenu>
+				<br /><br />   	 -->
+
+
+			<p:panelGrid columns="2" id="painel"
+				style="width:30%; margin-top: 20px" columnClasses="rotulo, campo">
+
+				<p:selectOneMenu value="#{consultaLancamentosBean.usuario}"
+					rendered="#{facesContext.externalContext.isUserInRole('USUARIOS')}"
+					id="usuario" filter="true" filterMatchMode="contains">
+
+					<f:selectItems value="#{consultaLancamentosBean.todosUsuarios}"
+						var="usuario" itemValue="#{usuario}" itemLabel="#{usuario.nome}" />
+					<f:ajax event="change" render="frm" />
+				</p:selectOneMenu>
+
+
+
+				<p:inputText id="nome" size="5"
+					value="#{relatorioPedidosEmitidosBean.nome}">
+					<!--  <f:convertNumber locale="pt_BR" maxFractionDigits="2" minFractionDigits="2" />-->
+				</p:inputText>
+
+				<!--<p:outputLabel value="Data de criação" />
+	    		 <h:panelGroup>
+		    		<p:calendar value="#{relatorioPedidosEmitidosBean.dataInicio}" label="Data inicial" 
+		    			pattern="dd/MM/yyyy" size="10" />
+		    		<p:spacer width="8" />
+		    		<h:outputText value="a" />
+		    		<p:spacer width="8" />
+		    		<p:calendar value="#{relatorioPedidosEmitidosBean.dataFim}" label="Data final" 
+		    			pattern="dd/MM/yyyy" size="10" />
+		    	</h:panelGroup> -->
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

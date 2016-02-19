@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<!--  <o:viewParam name="id" value="#{extratoLancamentosBean.extrato}" />-->
+
+		<!--  
+		Esta configuração causa uma independência* na view da opção extrato
+		<f:viewAction action="#{consultaLancamentosBean.extrato}" />-->
+	</f:metadata>
+
+	<f:metadata>
+		<f:viewAction action="#{extratoLancamentosBean.consultarExtrato}" />
+	</f:metadata>
+
+	<f:metadata>
+		<f:viewAction action="#{extratoLancamentosBean.extrato}" />
+	</f:metadata>
+
+	<f:metadata>
+		<f:viewAction action="#{extratoLancamentosBean.calcula}" />
+	</f:metadata>
+
+	<f:metadata>
+		<f:viewAction action="#{relatorioLancamentosBean.emitir}" />
+
+	</f:metadata>
+
+	<f:metadata>
+		<f:viewAction action="#{extratoLancamentosBean.calculaLucro}" />
+	</f:metadata>
+
+	<ui:define name="titulo">Extrato</ui:define>
+
+	<ui:define name="corpo">
+		<h1>Extrato</h1>
+
+		<h:form id="frm">
+			<p:messages showDetail="false" showSummary="true" autoUpdate="true" />
+
+			<!--<p:panelGrid columns="0" id="grid">  -->
+
+
+
+			
+
+			  <p:outputLabel value="DataInício: " for="dataInicial" />
+			<p:calendar size="12" id="dataInicial" pattern="dd/MM/yyyy"
+				value="#{extratoLancamentosBean.dataInicial}" />
+
+
+			<p:outputLabel value="DataFim: " for="dataFinal" />
+			<p:calendar size="12" id="dataFinal" pattern="dd/MM/yyyy"
+				value="#{extratoLancamentosBean.dataFinal}" />
+<!--  <p:outputLabel value="DataInício: " for="dataInicial_" />
+	<p:inputText  id="dataInicial_" value="#{extratoLancamentosBean.dataInicial}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:inputText><br />
+				<p:outputLabel value="DataFim: " for="dataFinal_" />
+				 <p:inputText  id="dataFinal_" value="#{extratoLancamentosBean.dataFinal}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:inputText>-->
+
+
+		
+			<p:commandButton value="Busca: "
+				
+				action="#{extratoLancamentosBean.consultarExtrato}"
+				icon="ui-icon-refresh" update="@form" />
+
+			<br />
+			<p:inputText type="hidden" id="nome" size="5"
+				value="#{relatorioLancamentosBean.nome}">
+				<!--  <f:convertNumber locale="pt_BR" maxFractionDigits="2" minFractionDigits="2" />-->
+			</p:inputText>
+
+			<p:inputText type="hidden" id="saldoNegativoFiltro" size="8"
+				value="#{relatorioLancamentosBean.saldoNegativoFiltro}">
+			</p:inputText>
+
+			<p:inputText type="hidden" id="lucroFiltro" size="8"
+				value="#{relatorioLancamentosBean.lucroFiltro}">
+			</p:inputText>
+
+			<p:inputText type="hidden" id="totalFiltro" size="8"
+				value="#{relatorioLancamentosBean.totalFiltro}">
+			</p:inputText>
+			
+			
+			<p:inputText type="hidden" id="dataIniciall" value="#{relatorioLancamentosBean.dataInicial}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:inputText><br />
+				
+				 <p:inputText type="hidden" id="dataFinall" value="#{relatorioLancamentosBean.dataFinal}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:inputText>
+ 
+			<!--  <p:calendar type="hidden" id="dataInicio" size="10" pattern="dd/MM/yyyy"
+			
+				value="#{relatorioLancamentosBean.dataInicial}" >
+				
+				</p:calendar>-->
+				
+				<!-- <p:calendar  id="dataFim" size="10" pattern="dd/MM/yyyy"
+			
+				value="#{relatorioLancamentosBean.dataFinal}" >
+				</p:calendar> -->
+				 
+           
+          
+		 <!-- <p:inputText  id="dataIniciall" size="30"
+				value="#{relatorioLancamentosBean.dataInicial}">
+			</p:inputText>
+		 <br />	
+          <p:inputText  id="dataFinall" size="30"
+				value="#{relatorioLancamentosBean.dataFinal}">
+			</p:inputText>-->
+				
+				
+			<br />
+			
+
+		
+			<br />
+			<br />
+			<p:commandButton value="Imprimir"
+				action="#{relatorioLancamentosBean.emitir}" icon="ui-icon-print"
+				ajax="false" />
+
+
+			
+
+
+			<p:dataTable value="#{extratoLancamentosBean.extrato}" var="extrato"
+				style="margin-top:5px" paginator="true" rows="15"
+				paginatorPosition="bottom">
+				<p:column headerText="Pessoa" sortBy="#{extrato.pessoa.nome}">
+					<h:outputText value="#{extrato.pessoa.nome}" />
+				</p:column>
+				<p:column headerText="Descrição" sortBy="#{extrato.descricao}">
+					<h:outputText value="#{extrato.descricao}" />
+				</p:column>
+				<p:column headerText="Tipo" width="80">
+					<h:outputText value="#{extrato.tipo.descricao}" />
+				</p:column>
+				<p:column headerText="Valor" style="text-align: right"
+					sortBy="#{extrato.valor}" width="100">
+					<h:outputText value="#{extrato.valor}">
+						<f:convertNumber type="currency" locale="pt_BR" />
+					</h:outputText>
+				</p:column>
+
+
+
+
+				<p:column headerText="Vencimento" style="text-align: center"
+					sortBy="#{extrato.dataVencimento}" width="100">
+					<h:outputText value="#{extrato.dataVencimento}">
+						<f:convertDateTime pattern="dd/MM/yyyy"
+							timeZone="America/Sao_Paulo" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Pagamento" style="text-align: center"
+					sortBy="#{extrato.dataPagamento}" width="100">
+					<h:outputText value="#{extrato.dataPagamento}">
+						<f:convertDateTime pattern="dd/MM/yyyy"
+							timeZone="America/Sao_Paulo" />
+					</h:outputText>
+				</p:column>
+
+			
+
+
+				<p:column width="100" style="text-align: center">
+					<p:button
+						rendered="#{facesContext.externalContext.isUserInRole('ROLE_USER') or
+						facesContext.externalContext.isUserInRole('ROLE_ADMIN')}"
+						icon="ui-icon-pencil" title="Editar" outcome="/CadastroLancamento">
+						<f:param name="id" value="#{lancamento.id}" />
+					</p:button>
+
+					<p:button
+						rendered="#{facesContext.externalContext.isUserInRole('ROLE_USER') or
+						facesContext.externalContext.isUserInRole('ROLE_ADMIN')}"
+						icon="ui-icon-calculator" title="BuscaLucro" outcome="/buscaLucro">
+						<f:param name="id" value="#{lancamento.id}" />
+					</p:button>
+
+					<p:commandButton
+						rendered="#{facesContext.externalContext.isUserInRole('ROLE_ADMIN')}"
+						icon="ui-icon-trash" title="Excluir" process="@this"
+						update="@form" action="#{extratoLancamentosBean.excluir}">
+						<f:setPropertyActionListener value="#{extrato}"
+							target="#{extratoLancamentosBean.lancamentoSelecionado}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+
+		
+			<br />
+			<br />
+			<h:outputText value="Saldo:  #{extratoLancamentosBean.lucroFiltro}" />
+			<br />
+			<br />
+			<h:outputText
+				value="Total Negativado: #{extratoLancamentosBean.saldoNegativoFiltro}" />
+			<br />
+			<br />
+			<h:outputText
+				value="Total de Receitas: #{extratoLancamentosBean.totalFiltro}" />
+			<br />
+			<br />
+		</h:form>
+	</ui:define>
+
+</ui:composition>

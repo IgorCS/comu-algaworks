@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorioLancamentos" printOrder="Horizontal" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cbedb1e6-431c-4763-9369-69641e8c9ff2">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="Calculo" uuid="c26aaad2-8117-4fee-87db-cdda8e65e1eb"/>
+	<parameter name="nome" class="java.lang.String"/>
+	<parameter name="saldoNegativoFiltro" class="java.math.BigDecimal">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="lucroFiltro" class="java.math.BigDecimal">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="totalFiltro" class="java.math.BigDecimal">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dataInicial" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dataFinal" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * FROM Lancamento l INNER JOIN
+Usuario u ON(u.id=l.usuario_id) WHERE u.nome=$P{nome}
+AND data_vencimento BETWEEN $P{dataInicial}
+AND DATE_ADD($P{dataFinal}, INTERVAL 1 DAY);]]>
+	</queryString>
+	<field name="id" class="java.lang.Long"/>
+	<field name="descricao" class="java.lang.String"/>
+	<field name="valor" class="java.math.BigDecimal"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="data_vencimento" class="java.lang.String"/>
+	<field name="data_pagamento" class="java.lang.String"/>
+	<variable name="totalValor" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<variable name="lucroFiltro" class="java.lang.String"/>
+	<variable name="saldoNegativoFiltro" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="78" splitType="Stretch">
+			<staticText>
+				<reportElement x="185" y="0" width="151" height="33" uuid="494e1d43-568e-47ad-94d6-dd81e393d40c"/>
+				<textElement textAlignment="Justified">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Lançamentos]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="455" y="0" width="100" height="20" uuid="ff7d70ea-65ce-4c63-846e-23691e4523f8"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="51" y="58" width="100" height="20" uuid="e619c491-c873-4527-be08-c01d23eb3be3"/>
+				<textFieldExpression><![CDATA[$P{nome}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="58" width="51" height="20" uuid="bd1b367d-be38-425f-82dc-a15c25e89f58"/>
+				<text><![CDATA[Usuário.:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="51" height="20" uuid="cbb9c536-c76c-49e0-b888-434087207e6d"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="0" width="188" height="20" uuid="e66268b0-3920-49a7-9292-30a1bc4aa08c"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descrição]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="249" y="2" width="37" height="18" uuid="fc05a50b-511c-4c42-8cb4-0ad28c14136d"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="304" y="2" width="52" height="18" uuid="eb7c7e1f-d6ff-46ea-ab24-c227bced266c"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="373" y="0" width="82" height="20" uuid="c29cfc7e-3b7e-4f3f-893e-3d7c7f2a709f"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Vencimento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="471" y="0" width="84" height="20" uuid="93937635-5ee5-4057-8119-6389ab949610"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pagamento]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="40" height="20" uuid="64545751-d70a-49a9-9fa5-65c8ad921082"/>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="51" y="0" width="188" height="20" uuid="66fcac16-6919-46b0-bd3c-362a8354047b"/>
+				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="249" y="0" width="37" height="20" uuid="19b6522f-c90c-4a76-86c6-3ee93e711f52"/>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="304" y="0" width="52" height="20" uuid="e1e004ea-5d5e-4ec6-9266-688f4bf066c3"/>
+				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="373" y="0" width="82" height="20" uuid="22659b45-ea47-4373-834f-541bb51ed364"/>
+				<textFieldExpression><![CDATA[$F{data_vencimento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="471" y="0" width="84" height="20" uuid="d2d8495b-474e-4585-85cd-240e9deca39f"/>
+				<textElement>
+					<font fontName="Serif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{data_pagamento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="93" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="79" width="555" height="14" uuid="14b4ef45-cc99-4924-b353-dd3516c5b83f"/>
+				<text><![CDATA[_____________________________________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="07c4e59b-7750-41ca-b18c-52625667e7ec"/>
+				<text><![CDATA[Total Movimentado.:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="0" width="100" height="20" uuid="a6bb93cb-62c4-4b25-a34a-a01bec5b1703"/>
+				<textFieldExpression><![CDATA[$V{totalValor}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="100" height="20" forecolor="#990000" uuid="7fb5e06a-a096-4ca6-a82d-abbc81951234"/>
+				<text><![CDATA[SaldoNegativado.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="59" width="100" height="20" forecolor="#000066" uuid="9bd23b77-a581-4065-a934-76cf490af657"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lucro.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="100" height="20" forecolor="#006633" uuid="4cf57d9f-870c-499e-865e-0103b4d89ae8"/>
+				<text><![CDATA[Receitas.:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="40" width="100" height="20" uuid="5a6f1351-172e-4ba6-827a-08737271734d"/>
+				<textFieldExpression><![CDATA[$P{totalFiltro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="60" width="100" height="20" uuid="0de12b91-3797-43e5-bb29-f2eadd66dba3"/>
+				<textFieldExpression><![CDATA[$P{lucroFiltro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="20" width="180" height="20" uuid="cc24a603-25c6-4b80-a1ae-b0b393138533"/>
+				<textFieldExpression><![CDATA[$P{saldoNegativoFiltro}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

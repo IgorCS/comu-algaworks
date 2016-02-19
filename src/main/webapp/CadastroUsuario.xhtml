@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	
+	
+<h:head>
+	<title>Cadastro de Usuário</title>
+	<h:outputStylesheet library="algaworks" name="estilo.css" />
+</h:head>
+
+		<h1>Cadastro</h1>
+
+		<h:form id="frm">
+		
+		<p:ajaxStatus onstart="$('input').css('background-color', 'yellow')"
+			oncomplete="$('input').css('background-color', '')" />
+	
+		
+		
+			<p:messages showDetail="false" showSummary="true" autoUpdate="true" />
+
+			<p:panelGrid columns="2" id="grid">
+			
+			<p:outputLabel value="Login:" for="login" />
+			<p:inputText id="login" size="10" value="#{cadastroUsuarioBean.usuario.nome}" 
+			completeMethod="#{cadastroUsuarioBean.usuariosExistentes}" required="true">
+				<p:ajax listener="#{cadastroUsuarioBean.verificarDisponibilidadeLogin}" 
+					event="change" process="@this" />
+			</p:inputText>			
+
+				<h:outputLabel value="Nome Completo:" />
+				<h:inputText size="60"
+					value="#{cadastroUsuarioBean.usuario.username}" label="Username" />
+				<!-- <h:outputLabel value="Login:" />
+				<h:inputText size="60" value="#{cadastroUsuarioBean.usuario.nome}"
+					label="Nome" />-->
+				<h:outputLabel value="Email:" />
+				<h:inputText size="60" value="#{cadastroUsuarioBean.usuario.email}"
+					label="Email" />
+				<h:outputLabel value="Senha:" />
+				<h:inputSecret size="60"
+					value="#{cadastroUsuarioBean.usuario.senha}" label="Senha" />
+
+				<p:commandButton value="Salvar"
+					action="#{cadastroUsuarioBean.salvarUsuario}" icon="ui-icon-disk"
+					update="@form" />
+					
+					<p:button icon="ui-icon-star" value="Login" outcome="/Login">
+						
+					</p:button>
+				<!-- 
+					@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "usuario_grupo", joinColumns = @JoinColumn(name = "usuario_id") ,
+	inverseJoinColumns = @JoinColumn(name = "grupo_id") )
+					 -->
+			</p:panelGrid>
+		</h:form>
+	</html>

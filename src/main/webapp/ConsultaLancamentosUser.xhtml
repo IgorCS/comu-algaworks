@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:metadata>
+		<f:viewAction action="#{consultaLancamentosBean.consultar}" />
+	</f:metadata>
+
+	<f:metadata>
+		<f:viewAction action="#{consultaLancamentosBean.calcula}" />
+	</f:metadata>
+
+
+
+
+	<ui:define name="titulo">Consulta de lançamentos</ui:define>
+
+	<ui:define name="corpo">
+
+		<h1>Consulta de lançamentos</h1>
+
+		<h:form id="frm">
+		<p:messages showDetail="false" showSummary="true" autoUpdate="true" />
+			<p:outputLabel value="Usuario" for="usuario" />
+				<p:selectOneMenu value="#{consultaLancamentosBean.usuario}"
+						id="usuario" filter="true" filterMatchMode="contains">
+					<f:selectItem itemLabel="Selecione" noSelectionOption="true" />	
+					<f:selectItems value="#{consultaLancamentosBean.todosUsuarios}"
+						var="usuario" itemValue="#{usuario}" itemLabel="#{usuario.username}" />
+						<f:ajax event="change" render="frm"/> 
+					</p:selectOneMenu>
+				<br /><br />
+				
+						
+						<p:commandButton value="Busca:"
+						action="#{consultaLancamentosBean.consultar}"
+						icon="ui-icon-disk" update="@form" />
+						
+				<br /><br />		
+				
+						
+						
+						
+			
+
+			<p:dataTable value="#{consultaLancamentosBean.lancamentos}"
+				var="lancamento" border="1" cellspacing="0" cellpadding="2"
+				paginator="true" rows="5" paginatorPosition="bottom">
+				<p:column headerText="Pessoa" sortBy="#{lancamento.pessoa.nome}">
+					<h:outputText value="#{lancamento.pessoa.nome}" />
+				</p:column>
+				<p:column headerText="Descrição" sortBy="#{lancamento.descricao}">
+					<h:outputText value="#{lancamento.descricao}" />
+				</p:column>
+				<p:column headerText="Tipo" width="80">
+					<h:outputText value="#{lancamento.tipo.descricao}" />
+				</p:column>
+				<p:column headerText="Valor" style="text-align: right"
+					sortBy="#{lancamento.valor}" width="100">
+					<h:outputText value="#{lancamento.valor}">
+						<f:convertNumber type="currency" locale="pt_BR" />
+					</h:outputText>
+				</p:column>
+
+
+				<!-- TESTES PARA PEGAR VALOR TOTAL DE LANCAMENTOS -->
+				<!--<p:column headerText="Valor" style="text-align: right"
+					sortBy="#{lancamento.valorTotal}" width="100">
+					<h:outputText value="#{lancamento.valorTotal}">
+						<f:convertNumber type="currency" locale="pt_BR" />
+					</h:outputText>
+				</p:column>-->
+				<!-- TESTES PARA PEGAR VALOR TOTAL DE LANCAMENTOS -->
+
+
+				<p:column headerText="Vencimento" style="text-align: center"
+					sortBy="#{lancamento.dataVencimento}" width="100">
+					<h:outputText value="#{lancamento.dataVencimento}">
+						<f:convertDateTime pattern="dd/MM/yyyy"
+							timeZone="America/Sao_Paulo" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Pagamento" style="text-align: center"
+					sortBy="#{lancamento.dataPagamento}" width="100">
+					<h:outputText value="#{lancamento.dataPagamento}">
+						<f:convertDateTime pattern="dd/MM/yyyy"
+							timeZone="America/Sao_Paulo" />
+					</h:outputText>
+				</p:column>
+
+				<!-- AJAX  -->
+				<!--  <p:column
+						rendered="#{facesContext.externalContext.isUserInRole('ROLE_ADMIN')}">
+						<f:facet name="header">
+							<h:outputText value="Alterar" />
+						</f:facet>
+						<h:commandLink value="Alterar">
+							<p:ajax event="click" listener="#{dvdBean.preparaAlterar(d)}"
+								update="@form" />
+						</h:commandLink>
+					</p:column>-->
+
+
+				<p:column width="100" style="text-align: center">
+					<p:button
+						rendered="#{facesContext.externalContext.isUserInRole('USUARIOS') or
+						facesContext.externalContext.isUserInRole('ADMINISTRADORES')}"
+						icon="ui-icon-pencil" title="Editar" outcome="/CadastroLancamento">
+						<f:param name="id" value="#{lancamento.id}" />
+					</p:button>
+					
+					<p:button
+						rendered="#{facesContext.externalContext.isUserInRole('USUARIOS') or
+						facesContext.externalContext.isUserInRole('ADMINISTRADORES')}"
+						icon="ui-icon-calculator" title="Extrato" outcome="/extrato">
+						<f:param name="id" value="#{lancamento.id}" />
+					</p:button>
+					
+					<p:commandButton
+						rendered="#{facesContext.externalContext.isUserInRole('ADMINISTRADORES')}"
+						icon="ui-icon-trash" title="Excluir" process="@this"
+						update="@form" action="#{consultaLancamentosBean.excluir}">
+						<f:setPropertyActionListener value="#{lancamento}"
+							target="#{consultaLancamentosBean.lancamentoSelecionado}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+			<br />
+			<br />
+
+
+
+			<p:dataTable value="#{consultaLancamentosBean.lancamentos}"
+				var="lancamento" border="1" cellspacing="0" cellpadding="2"
+				paginator="true" rows="5" paginatorPosition="bottom">
+
+				<p:column headerText="VALOR TOTAL:" style="text-align: right">
+
+					<!--  <h:outputText value="#{lancamentos.somaValor}">-->
+					<h:outputText value="#{lancamento.valor}">
+						<f:convertNumber type="currency" locale="pt_BR" />
+					</h:outputText>
+
+
+
+				</p:column>
+
+
+				<!-- 
+				<p:outputLabel value="Descrição" for="descricao" />
+				<p:autoComplete id="descricao" size="60" 
+					value="#{cadastroLancamentoBean.lancamento.descricao}"
+					completeMethod="#{cadastroLancamentoBean.pesquisarDescricoes}" />
+
+				<p:outputLabel value="Valor" for="valor" />
+				<p:inputText id="valor" size="12" 
+						value="#{cadastroLancamentoBean.lancamento.valor}">
+					<f:convertNumber locale="pt_BR" maxFractionDigits="2" minFractionDigits="2" />
+				</p:inputText>
+				
+				
+				 -->
+
+			</p:dataTable>
+
+
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>
