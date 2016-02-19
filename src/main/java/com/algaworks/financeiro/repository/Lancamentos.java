@@ -46,29 +46,35 @@ public class Lancamentos implements Serializable {
 		return query.getResultList();
 	}
 
-
-
-	public List<Lancamento> lancamentos() {
-
-		UsuarioController user = new UsuarioController();
-
-		TypedQuery<Lancamento> query = manager.createQuery("select l FROM Lancamento l INNER JOIN l.usuario u WHERE "
-				+ "nome=" + "'" + user.getUsuario().getUsername() + "'"
-
-		, Lancamento.class);
-
+/*
+ //Nesta TypedQuery faço a consulta que vai ser mapeada no metódo verificaLoginDisponibilidade.
+	public List<String> usuarioExiste(String usuarioLogin) {
+		TypedQuery<String> query = manager.createQuery(
+				"select distinct nome from Usuario " ,
+		         // + "where upper(nome) "
+				//+ "like upper(:usuarioLogin)",
+				String.class);
+		//query.setParameter("usuarioLogin", "%" + "" + "%");
 		return query.getResultList();
+	}
+ */
+
+	public List<Lancamento> lancamentos(String nome){
+		UsuarioController user = new UsuarioController();
+		TypedQuery<Lancamento> query = manager.createQuery(
+				"select l FROM Lancamento l INNER JOIN l.usuario u"
+				+ " WHERE u.nome=:nome", Lancamento.class);
+         query.setParameter("nome",user.getUsuario().getUsername());
+		 return query.getResultList();
 
 	}
 
-	public BigDecimal saldoNegativo() {
+	public BigDecimal saldoNegativo(String nome) {
 		UsuarioController user = new UsuarioController();
-		String jpql = "select sum(-l.valor) from Lancamento l INNER JOIN l.usuario u " + " where u.nome=" + "'"
-				+ user.getUsuario().getUsername() + "'"
-
-				+ " and l.tipo='DESPESA' ";
+		String jpql = "select sum(-l.valor) from Lancamento l INNER JOIN l.usuario u "
+		 +"where u.nome=:nome and l.tipo='DESPESA'";
 		javax.persistence.Query query = manager.createQuery(jpql);
-
+		query.setParameter("nome",user.getUsuario().getUsername());
 		return (BigDecimal) ((javax.persistence.Query) query).getSingleResult();
 	}
 
@@ -82,30 +88,29 @@ public class Lancamentos implements Serializable {
 		return (BigDecimal) ((javax.persistence.Query) query).getSingleResult();
 	}
 
-	public List<Lancamento> extrato(Date dataInicial, Date dataFinal) {
+	public List<Lancamento> extrato(Date dataInicial, Date dataFinal,String nome) {
 
 		UsuarioController user = new UsuarioController();
 
 		TypedQuery<Lancamento> query = manager.createQuery(
 				"select l FROM Lancamento l INNER JOIN l.usuario u WHERE "
-				+ "nome="+ "'" + user.getUsuario().getUsername() + "'"
+				+ "nome=:nome"
 				+ " AND  data_vencimento BETWEEN (:dataInicial) "
 				+ " AND (:dataFinal) "
 
-		, Lancamento.class);
-		/*System.out.println("data Inicial" + dataInicial);
-		System.out.println("data Final" + dataFinal);*/
+		, Lancamento.class);		
+		query.setParameter("nome",user.getUsuario().getUsername());
 		query.setParameter("dataInicial", dataInicial, TemporalType.DATE);
 		query.setParameter("dataFinal",   dataFinal, TemporalType.DATE);
 		return query.getResultList();
 	}
 
-	public BigDecimal LucroFiltro(Date dataInicial, Date dataFinal) {
+	public BigDecimal LucroFiltro(Date dataInicial, Date dataFinal,String nome) {
 		UsuarioController user = new UsuarioController();
-		String jpql = "select sum(l.valor) from Lancamento l INNER JOIN l.usuario u" + " where u.nome=" + "'"
-				+ user.getUsuario().getUsername() + "'" + " AND l.tipo='RECEITA' "
-				+ " AND  data_vencimento BETWEEN (:dataInicial) AND (:dataFinal) ";
+		String jpql = "select sum(l.valor) from Lancamento l INNER JOIN l.usuario u" + " where u.nome=:nome"
+		+" AND l.tipo='RECEITA' AND  data_vencimento BETWEEN (:dataInicial) AND (:dataFinal) ";
 		javax.persistence.Query query = manager.createQuery(jpql);
+		query.setParameter("nome",user.getUsuario().getUsername());
 		query.setParameter("dataInicial", dataInicial, TemporalType.DATE);
 		query.setParameter("dataFinal", dataFinal, TemporalType.DATE);
 		return (BigDecimal) ((javax.persistence.Query) query).getSingleResult();

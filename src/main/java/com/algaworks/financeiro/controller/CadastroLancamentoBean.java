@@ -45,6 +45,17 @@ public class CadastroLancamentoBean implements Serializable {
 		this.usuario = usuario;
 	}
 
+	//Login
+		private String nome;	
+
+		public String getNome() {
+			return nome;
+		}
+
+		public void setNome(String nome) {
+			this.nome = nome;
+		}
+		
 	@Inject
 	private Lancamentos lancamentos;
 
@@ -64,7 +75,7 @@ public class CadastroLancamentoBean implements Serializable {
 
 	public void prepararCadastro() {
 		this.todasPessoas = this.pessoas.todas();
-		this.todosUsuarios = this.usuarios.todosUsuarios();
+		this.todosUsuarios = this.usuarios.todosUsuarios(nome);
 
 		if (this.lancamento == null) {
 			this.lancamento = new Lancamento();

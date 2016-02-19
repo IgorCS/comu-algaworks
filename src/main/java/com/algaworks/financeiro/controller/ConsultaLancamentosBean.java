@@ -54,8 +54,17 @@ public class ConsultaLancamentosBean implements Serializable {
 	private BigDecimal lucro;
 	
 	private Double lucroJunit;
-
 	
+	//Login
+	private String nome;	
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
 	private BigDecimal saldoNegativos;
 
@@ -130,7 +139,7 @@ public class ConsultaLancamentosBean implements Serializable {
 	public void consultar() {
 
 		if (this.saldoNegativos == null || this.saldoNegativos != null) {
-			saldoNegativos = lancamentosRepository.saldoNegativo();
+			saldoNegativos = lancamentosRepository.saldoNegativo(nome);
 		}
 
 		if (this.total == null || this.total != null) {
@@ -163,11 +172,12 @@ public class ConsultaLancamentosBean implements Serializable {
 		
 
 		System.out.println("RESULTADO DA BAGAÇA: " + lucro);		
-		this.lancamentos = lancamentosRepository.lancamentos();
+		this.lancamentos = lancamentosRepository.lancamentos(nome);
+		System.out.println("Usuario que fez LOGIN:" +nome);
 		this.todasPessoas = this.pessoas.todasPessoas();
 		this.lancamento = new Lancamento();
 		this.pessoa = new Pessoa();
-		this.todosUsuarios = this.usuarios.todosUsuarios();
+		this.todosUsuarios = this.usuarios.todosUsuarios(nome);
 
 		this.usuario = new Usuario();
 		return;
@@ -190,11 +200,10 @@ public class ConsultaLancamentosBean implements Serializable {
 
 		this.lancamentos = lancamentosRepository.lancePessoa();
 		this.todasPessoas = this.pessoas.todasPessoas();
-		this.todosUsuarios = this.usuarios.todosUsuarios();
+		this.todosUsuarios = this.usuarios.todosUsuarios(nome);
 		this.lancamento = new Lancamento();
 		this.pessoa = new Pessoa();
-		this.usuario = new Usuario();
-		
+		this.usuario = new Usuario();		
 
 	}
 

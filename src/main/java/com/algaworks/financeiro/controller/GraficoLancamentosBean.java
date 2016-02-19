@@ -25,6 +25,17 @@ import com.algaworks.financeiro.repository.Lancamentos;
 public class GraficoLancamentosBean implements Serializable {
 
 	// private static DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM");
+	
+	//Login
+		private String nome;	
+
+		public String getNome() {
+			return nome;
+		}
+
+		public void setNome(String nome) {
+			this.nome = nome;
+		}
 
 	/**
 	 * 
@@ -79,7 +90,7 @@ public class GraficoLancamentosBean implements Serializable {
 		ChartSeries series = new ChartSeries();	
 		series.set("Inicial", 0);
 		series.set("Total de Receitas* "+lancamentos.Lucro(15),  lancamentos.Lucro(15));  
-		series.set("Total Negativado* "+lancamentos.saldoNegativo(),  lancamentos.saldoNegativo());
+		series.set("Total Negativado* "+lancamentos.saldoNegativo(nome),  lancamentos.saldoNegativo(nome));
 		series.set("SALDO* "+lancamentosbean.getLucro(),lancamentosbean.getLucro());		
 		
 		/*series.set("Pesquisa 3", 400);

@@ -51,6 +51,17 @@ public class ExtratoLancamentosBean implements Serializable {
 
 	// @Temporal(TemporalType.DATE)
 	private Date dataFinal;
+	
+	//Login
+		private String nome;	
+
+		public String getNome() {
+			return nome;
+		}
+
+		public void setNome(String nome) {
+			this.nome = nome;
+		}
 
 	private BigDecimal lucroFiltro;
 
@@ -151,7 +162,7 @@ public class ExtratoLancamentosBean implements Serializable {
 		}
 
 		if (this.totalFiltro == null || this.totalFiltro != null) {
-			totalFiltro = lancamentosRepository.LucroFiltro(dataInicial, dataFinal);
+			totalFiltro = lancamentosRepository.LucroFiltro(dataInicial, dataFinal, nome);
 		}
 
 		if (this.saldoNegativoFiltro != null && this.totalFiltro != null) {
@@ -182,11 +193,11 @@ public class ExtratoLancamentosBean implements Serializable {
 		// AppUserDetailsService appUser = new AppUserDetailsService();
 		// this.lancamentos = lancamentosRepository.lancePessoa(pessoa);
 		// this.lancamentos = lancamentosRepository.lancamentos();
-		this.extrato = lancamentosRepository.extrato(dataInicial, dataFinal);
+		this.extrato = lancamentosRepository.extrato(dataInicial, dataFinal,nome);
 		this.todasPessoas = this.pessoas.todasPessoas();
 		this.lancamento = new Lancamento();
 		this.pessoa = new Pessoa();
-		this.todosUsuarios = this.usuarios.todosUsuarios();
+		this.todosUsuarios = this.usuarios.todosUsuarios(nome);
 		this.usuario = new Usuario();
 		return;
 	}
@@ -222,11 +233,11 @@ public class ExtratoLancamentosBean implements Serializable {
 		// this.lancamentos = lancamentosRepository.lancePessoa();
 		// this.lancamentos = lancamentosRepository.todosLanc();
 		this.todasPessoas = this.pessoas.todasPessoas();
-		this.todosUsuarios = this.usuarios.todosUsuarios();
+		this.todosUsuarios = this.usuarios.todosUsuarios(nome);
 		this.lancamento = new Lancamento();
 		this.pessoa = new Pessoa();
 		this.usuario = new Usuario();
-		this.extrato = this.lancamentosRepository.extrato(dataInicial, dataFinal);
+		this.extrato = this.lancamentosRepository.extrato(dataInicial, dataFinal, nome);
 
 	}
 

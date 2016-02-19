@@ -40,32 +40,30 @@ public class Usuarios implements Serializable {
 		return manager.find(Usuario.class, username);
 	}
 	
-	//Nesta TypedQuery faço a consulta que vai ser mapeada no metódo verificaLoginDisponibilidade.
-   //Neste caso passo um parâmetro fazendo referência à um  objeto  no meu Bean para receber _
-  //,o que o usuário enviou no form.
-	//obs: Veja que a consulta retorna apenas uma lista e no HashMap retorna uma Key para,
+	    //Nesta TypedQuery faço a consulta que vai ser mapeada no metódo verificaLoginDisponibilidade.
+	   //Neste caso passo um parâmetro fazendo referência à um  objeto  no meu Bean para receber _
+	  //,o que o usuário enviou no form.
+	 //obs: Veja que a consulta retorna apenas uma lista e no HashMap retorna uma Key para,
 	//saber se o nome digitado existe ou não
-	
-	public List<String> usuarioExiste(String usuarioLogin) {
-		TypedQuery<String> query = manager.createQuery(
-				"select nome from Usuario " ,
-		         // + "where upper(nome) "
-				//+ "like upper(:usuarioLogin)",
-				String.class);
-		//query.setParameter("usuarioLogin", "%" + "" + "%");
-		return query.getResultList();
-	}
+		
+		public List<String> usuarioExiste(String usuarioLogin) {
+			TypedQuery<String> query = manager.createQuery(
+					"select nome from Usuario " ,
+			         String.class);
+			 //Não precisa usar parâmetro pois a Key aponta pro usuário que não tem no banco de dados
+			//query.setParameter("usuarioLogin", "%" + "" + "%");
+			return query.getResultList();
+		}
 
 	
 	
 	
-	public List<Usuario> todosUsuarios() {
-		UsuarioController user = new UsuarioController();
-		
+	public List<Usuario> todosUsuarios(String nome) {
+		UsuarioController user = new UsuarioController();		
 		TypedQuery<Usuario> query = manager.createQuery("from Usuario u WHERE " +
-				"u.nome="+"'"+user.getUsuario().getUsername()+"'"
+				"u.nome=:nome"
 				,Usuario.class);
-	
+		query.setParameter("nome",user.getUsuario().getUsername());
 		return query.getResultList();
 	}
 
