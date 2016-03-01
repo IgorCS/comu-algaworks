@@ -20,6 +20,14 @@ header {
 	padding: 0px 8px
 }
 
+.ui-datatable .ui-datatable-data .even-row td {
+	background-color: #F0F0F0;
+}
+
+.ui-datatable .ui-datatable-data .odd-row td {
+	background-color: #FFFFFF;
+}
+
 footer {
 	border-top: none;
 	padding: 5px 8px;
@@ -28,16 +36,15 @@ footer {
 }
 
 h1 {
-    font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
-    border-bottom: 2px solid #AFAFAF; 
-    font-size:  15px;
-    font-weight: bold;
-    margin: 1px;
-    padding: 1px;
-    color: #E10000;
+	font-family: Arial, "Arial CE", "Lucida Grande CE", lucida,
+		"Helvetica CE", sans-serif;
+	border-bottom: 2px solid #AFAFAF;
+	font-size: 15px;
+	font-weight: bold;
+	margin: 1px;
+	padding: 1px;
+	color: #E10000;
 }
-
-
 
 .ajax-status {
 	position: fixed;
@@ -55,15 +62,13 @@ h1 {
 
 .grid-login {
 	background-color: #f2f2f2;
-	border: none !important;"   
-	border: none !important;"   
+	border: none !important; "
+	border: none !important; "
 	margin-top: 8px;
 	padding: 10px;
 	width: 100%
 }
-.semBorda tr, .semBorda td {  
-    border: none !important;  
-} 
 
-
-
+.semBorda tr, .semBorda td {
+	border: none !important;
+}

@@ -15,7 +15,7 @@
 	</f:metadata>
 
 
-	
+
 
 	<f:metadata>
 		<f:viewAction action="#{consultaLancamentosBean.calcula}" />
@@ -48,11 +48,11 @@
 						var="usuario" itemValue="#{usuario}" itemLabel="#{usuario.nome}" />
 					<f:ajax event="change" render="frm" />
 				</p:selectOneMenu>
-						
-					
-					<!--  <p:outputLabel value="DataFinal: " for="dataVencimento2" />
+
+
+				<!--  <p:outputLabel value="DataFinal: " for="dataVencimento2" />
 				<p:calendar size="12" id="dataVencimento2" pattern="dd/MM/yyyy"
-					value="#{consultaLancamentosBean.dataVencimento}" />	-->				
+					value="#{consultaLancamentosBean.dataVencimento}" />	-->
 
 			</p:column>
 
@@ -62,7 +62,7 @@
 					<!--  <f:convertNumber locale="pt_BR" maxFractionDigits="2" minFractionDigits="2" />-->
 				</p:inputText>
 
-			
+
 			</p:panelGrid>
 
 
@@ -77,7 +77,13 @@
 			<!--  <p:commandButton value="Busca:"
 				action="#{consultaLancamentosBean.consultar}" icon="ui-icon-disk"
 				update="@form" />-->
+
+		
+				<!-- <p:dataTable id="lancamento"  var="lancamento" value="#{consultaLancamentosBean.lancamentos}" 
+		    		rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx" >-->
+				 
 			<p:dataTable value="#{consultaLancamentosBean.lancamentos}"
+			rowStyleClass="#{empty rowIx or rowIx mod 2 ne 0 ? 'even-row' : 'odd-row'}" rowIndexVar="rowIx" 
 				var="lancamento" border="0" cellspacing="0" cellpadding="2"
 				paginator="true" rows="15" paginatorPosition="bottom">
 				<p:column headerText="Pessoa" sortBy="#{lancamento.pessoa.nome}">

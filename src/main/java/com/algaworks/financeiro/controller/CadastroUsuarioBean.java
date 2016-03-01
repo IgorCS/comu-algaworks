@@ -22,7 +22,7 @@ public class CadastroUsuarioBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	//private String nome;
+	// private String nome;
 	private String usuarioLogin;
 
 	public String getUsuarioLogin() {
@@ -68,42 +68,56 @@ public class CadastroUsuarioBean implements Serializable {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 		}
-		
-		//HashMap para verificar se o usuário retorna uma chave e verifica se existe 
+
+		// HashMap para verificar se o usuário retorna uma chave e verifica se
+		// existe
 		Map<Integer, String> usuariosExistentes = new HashMap<Integer, String>();
 		List<String> nomesExistentes = new ArrayList<String>();
-		
+
 		nomesExistentes.addAll(usuarios.usuarioExiste(usuarioLogin));
-		//Aqui faz a chamada do Metódo e verifica se o LOGIN está disponível 
+		// Aqui faz a chamada do Metódo e verifica se o LOGIN está disponível
 		this.usuarioExiste = this.usuarios.usuarioExiste(usuarioLogin);
-		//Aqui eu passo um Objeto do Tipo interio e um do tipo String e acrescento minha coleção de String
-		//à um código para melhor visualizar o que está no Array de String
+		// Aqui eu passo um Objeto do Tipo inteiro e um do tipo String e
+		// acrescento minha coleção de String
+		// à uma referência chamada (código=1) para melhor visualizar o que está
+		// no Array de String e nome ser
+		// apontado.
 		usuariosExistentes.put(new Integer(1), nomesExistentes.toString());
 		nomesExistentes = new ArrayList<String>();
-        //No laço é que eu verifico os usuários e na repetição ele verifica o usuário existente 
-		//no banco de dados 
-		for (Integer codigo : usuariosExistentes.keySet()) {
-			 // for (String nome : clientes.get(codigo)) {
-			for (String nomeUsuario : usuariosExistentes.values()) {				
-				System.out.println("Código: "          + codigo + "KeySet()=>"+usuariosExistentes.keySet()+  
-						           "KeyValues()=>"+usuariosExistentes.values()+ 
-	        	                   " - Cliente: "      + usuarios.usuarioExiste(usuarioLogin)
-	        	                   +"ARRAY DE NOMES DE USUARIOS:"+nomeUsuario);
-				System.out.println("KEYTOSEARCH: " + usuarios.usuarioExiste(usuarioLogin) 
-				        + " USUARIO DIGITADO: "
-						+ this.usuario.getNome());
+		// No laço é que eu verifico os usuários e na repetição ele verifica o
+		// usuário existente
+		// no banco de dados
+		int aux = 0;
+		boolean find = false;
+		for (int i = 0; i < this.usuarios.usuarioExiste(usuarioLogin).size(); i++) {
+			for (Integer codigo : usuariosExistentes.keySet()) {
+				for (String nomeUsuario : usuariosExistentes.values()) {
+					if (this.usuarios.usuarioExiste(usuarioLogin).get(i).contains(this.usuario.getNome())) {
+						System.out.println(" A POSIÇÃO DO ARRAY DO NOME DIGITADO É: " + i
+								+ " E O USUARIO DIGITADO FOI: " + this.usuario.getNome()
+						// " ARRAY DE NOMES DE
+						// USUARIOS:"+this.usuarios.usuarioExiste(usuarioLogin)
+						);
+
+					}
+					aux = i;
+					find = true;
+				}
 
 			}
+
 		}
-        //Aqui é a condição para que o usuário possa verificar na view se o LOGIN que foi digitado
-		//por ele existe ou não.
-		if (usuarioExiste.contains(this.usuario.getNome())) {
+		// Aqui é a condição para que o usuário possa verificar na view se o
+		// LOGIN que foi digitado
+		// por ele existe ou não.
+		if (usuarioExiste.contains(this.usuario.getNome()) && find == true) {
 			msg = new FacesMessage("Este Login já está em uso!");
 			msg.setSeverity(FacesMessage.SEVERITY_WARN);
 		} else {
 			msg = new FacesMessage("Login disponível.");
 		}
 		FacesContext.getCurrentInstance().addMessage(null, msg);
+
 	}
 
 	public void salvarUsuario() {
@@ -113,7 +127,14 @@ public class CadastroUsuarioBean implements Serializable {
 			this.cadastroUsuario.salvarUsuario(this.usuario);
 
 			this.usuario = new Usuario();
-			context.addMessage(null, new FacesMessage("Você foi cadastrado cadastrado(a) com sucesso!"));
+
+			int Z = (this.usuarios.usuarioExiste(usuarioLogin).size() - 1);
+
+			System.out.println("polyPosition: " + Z);
+
+			context.addMessage(null, new FacesMessage("Olá " + (this.usuarios.usuarioExiste(usuarioLogin).get(Z))
+					+ " você foi cadastrado(a) com sucesso!"));
+
 		} catch (NegocioException e) {
 
 			FacesMessage mensagem = new FacesMessage(e.getMessage());
@@ -134,12 +155,10 @@ public class CadastroUsuarioBean implements Serializable {
 		this.usuario = usuario;
 	}
 
-	/*public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}*/
+	/*
+	 * public String getNome() { return nome; }
+	 * 
+	 * public void setNome(String nome) { this.nome = nome; }
+	 */
 
 }
